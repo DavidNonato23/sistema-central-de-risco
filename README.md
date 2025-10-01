@@ -7,6 +7,8 @@ O principal objetivo é transformar dados de log brutos em Inteligência de Segu
 🛠️ Tecnologias e Habilidades Chave
 
 <img width="988" height="111" alt="image" src="https://github.com/user-attachments/assets/734f49e8-2cdc-4466-a207-43fa173a9e24" />
+
+
 🔑 Módulos e Funcionalidades Chave
 1. Python: Enriquecimento de Risco (Módulo ETL)
 O script Python (sistema_analise_risco.py) é responsável pelo core da inteligência:
