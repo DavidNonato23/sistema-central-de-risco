@@ -11,46 +11,51 @@ O principal objetivo é transformar dados de log brutos em Inteligência de Segu
 
 🔑 Módulos e Funcionalidades Chave
 1. Python: Enriquecimento de Risco (Módulo ETL)
-O script Python (sistema_analise_risco.py) é responsável pelo core da inteligência:
-
-Classificação de Criticidade: Categoriza o evento como 'ALERTA_ATENCAO' (Status >= 400) ou 'SUCESSO_NORMAL' (Status < 400).
+Classificação de Criticidade: Categoriza o evento como 'ALERTA_ATENCAO' (Status >= 400).
 
 Inteligência de Ameaças: Adiciona a flag de risco (IP_Risco) verificando a origem contra uma Lista Negra simulada.
 
-2. Power BI: Modelagem e KPIs (Módulo DAX)
-KPI Principal: Criação da medida Taxa de Falha (Total de Alertas / Total de Logs) para medir o nível de risco do sistema.
+2. Solução de Engenharia: Estabilidade do Pipeline
+O projeto implementou uma solução robusta para contornar falhas de conexão Python/Power BI:
 
-3. Solução de Engenharia: Estabilidade do Pipeline
-O projeto foi configurado para resolver falhas comuns de conexão e permissão:
+O módulo os é utilizado para criar e exportar o CSV de forma estável, garantindo que o Power BI sempre acesse o novo lote de dados.
 
-O pipeline utiliza o módulo os para criar e exportar o CSV de forma estável, garantindo que o Power BI sempre tenha acesso à fonte de dados, independente das configurações de ambiente.
+3. Power BI: Modelagem e Priorização
+KPI Principal: Medida Taxa de Falha (Total de Alertas / Total de Logs) para medir o risco geral do sistema.
+
+Rastreamento: A Tabela de Detalhamento permite rastrear o IP de Origem, o horário e o Recurso Acessado.
 
 📊 Demonstração do Projeto em Ação
-O projeto está configurado com um Simulador de Ataque Sustentado (cerca de 200 logs gerados, com 75% classificados como alerta) para testar a capacidade de detecção do sistema em tempo real.
+O projeto está configurado com um Simulador de Ataque Sustentado para testar a capacidade de detecção do sistema.
 
-Visão Geral e Priorização de Risco
-O dashboard fornece os KPIs de alto nível e permite a priorização imediata:
+Simulação de Ataque Sustentado (Python)
+O código Python gera 200 logs, dos quais 75% são forçados a ser alertas (i < 150), testando a estabilidade do pipeline e a capacidade de detecção do sistema em tempo real.
 
-É possível monitorar o Dia, Mês e Ano da atividade.
+<img width="1920" height="1011" alt="Código Python Simulação de Ataque" src="https://github.com/user-attachments/assets/0bc0e82b-8118-4316-a742-2852c01b6137" />
 
-O Gráfico de Rosca permite o filtro imediato dos alertas.
+<img width="1920" height="1007" alt="Código Python Bloco de Geração de Logs" src="https://github.com/user-attachments/assets/2fb713e0-d343-43e0-d343-43e0-9d31-1954102f9a40" />
+
+Visão Geral e Priorização de Risco (Power BI)
+O dashboard demonstra o salto no KPI, provando a detecção:
+
+A Taxa de Falha salta para 75% após o ataque simulado.
+
+O Gráfico de Rosca permite o filtro imediato dos eventos ALERTA_ATENCAO.
 
 <img width="1596" height="805" alt="Visão Geral e KPIs" src="https://github.com/user-attachments/assets/7ff6c3e4-2c96-4b35-bc98-d7c04600fd3b" />
 
-Rastreamento de Ameaças (Acionabilidade)
-A Tabela de Detalhamento é a ferramenta mais valiosa para o analista, transformando a visualização em ação:
-
-Detalhes do Incidente: Permite rastrear o horário exato do ataque, a origem do IP e os recursos específicos que foram alvo da tentativa de invasão (ex: /admin/config).
+Rastreamento e Acionabilidade
+A Tabela de Detalhamento é a ferramenta mais valiosa, transformando a visualização em ação. Ela permite rastrear o horário exato do ataque e os recursos que foram alvo da tentativa de invasão.
 
 <img width="1920" height="1011" alt="Tabela de Rastreamento" src="https://github.com/user-attachments/assets/8030b365-c95f-4c02-ab36-d6642f745306" />
 
 ✨ Conclusão: Aprendizados e Habilidades
 Este projeto demonstra a habilidade de:
 
-Criar um pipeline de ETL em Python do zero.
+Criar um pipeline de ETL em Python do zero e resolver problemas de infraestrutura.
 
 Aplicar lógica de análise de risco e cibersegurança para enriquecimento de dados.
 
 Desenvolver KPIs estratégicos em DAX a partir de dados técnicos.
 
-Entregar um dashboard interativo e acionável, focado na priorização e resposta rápida a incidentes.
+Entregar um dashboard interativo e acionável, focado na priorização e resposta rápida a incidentes.priorização e resposta rápida a incidentes.
