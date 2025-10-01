@@ -3,72 +3,56 @@ import random
 from datetime import datetime, timedelta
 import os 
 
-
-ips_comuns = ['192.168.1.10', '192.168.1.11']
-ips_suspeitos = ['203.0.113.44', '198.51.100.12']
+ips_comuns = ['192.168.1.107', '192.168.1.111', '10.0.0.5', '172.31.255.255']
+ips_suspeitos = ['203.0.113.44', '198.51.100.12', '172.16.0.1', '1.1.1.1']
 status_sucesso = [200, 302]
 status_alerta = [401, 403, 500]
 
 registros = []
 hora_inicio = datetime.now() - timedelta(hours=1)
 
-for i in range(20):
-    if random.random() < 0.3:
-        ip = random.choice(ips_suspeitos)
-        status = random.choice(status_alerta)
-        recurso = '/admin/config'
+for i in range(200):
+    
+    if i < 150: 
+        ip = random.choice(ips_suspeitos)  
+        status = random.choice(status_alerta)  
+        recurso = '/admin/config' 
         agente = 'curl/7.64.1'
+        
     else:
         ip = random.choice(ips_comuns)
         status = random.choice(status_sucesso)
         recurso = '/index.html'
         agente = 'Mozilla/5.0'
-    
-    tempo = hora_inicio + timedelta(seconds=i * random.randint(10, 60))
+
+    tempo = hora_inicio + timedelta(seconds=i*random.randint(1, 10), microseconds=i)
     
     registros.append({
-        'DataHora': tempo,
         'IP_Origem': ip,
+        'DataHora': tempo,
         'Status': status,
         'Recurso': recurso,
-        'UserAgent': agente
+        'Agente': agente
     })
 
-df_bruto = pd.DataFrame(registros)
+df_mestre_logs = pd.DataFrame(registros)
 
-
-lista_negra = ['198.51.100.12', '10.10.10.10']
-
-df_bruto['IP_Risco'] = df_bruto['IP_Origem'].apply(
-    lambda x: 'SIM' if x in lista_negra else 'NÃO'
+status_alertas_set = set(status_alerta)
+df_mestre_logs['Criticidade'] = df_mestre_logs['Status'].apply(
+    lambda x: 'ALERTA_ATENCAO' if x in status_alertas_set else 'SUCESSO_NORMAL'
 )
 
-def checar_criticidade(status):
-    if status >= 400:
-        return 'ALERTA_ATENCAO'
-    else:
-        return 'SUCESSO_NORMAL'
-
-df_bruto['Criticidade'] = df_bruto['Status'].apply(checar_criticidade)
-
-df_bruto['UA_Suspeito'] = df_bruto['UserAgent'].apply(
-    lambda x: 'SIM' if 'curl' in x or 'bot' in x else 'NÃO'
+ips_suspeitos_set = set(ips_suspeitos)
+df_mestre_logs['IP_Risco'] = df_mestre_logs['IP_Origem'].apply(
+    lambda x: 'SIM' if x in ips_suspeitos_set else 'NÃO'
 )
 
-df_bruto['Recurso'] = df_bruto['Recurso'].str.lower()
-df_bruto = df_bruto.drop(columns=['UserAgent'])
+diretorio_saida = 'output'
+if not os.path.exists(diretorio_saida):
+    os.makedirs(diretorio_saida)
 
-df_mestre_logs = df_bruto
+caminho_arquivo = os.path.join(diretorio_saida, 'dados_scar.csv')
+df_mestre_logs.to_csv(caminho_arquivo, index=False, encoding='utf-8')
 
-
-
-
-NOME_DO_ARQUIVO = 'output/dados_scar.csv'
-
-
-output_dir = 'output'
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-
-
-df_mestre_logs.to_csv(NOME_DO_ARQUIVO, index=False, encoding='utf-8')
+print(f"Arquivo de logs de segurança gerado com sucesso em: {caminho_arquivo}")
+print(f"Total de Registros Gerados: {len(df_mestre_logs)}")
