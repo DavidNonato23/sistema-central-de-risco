@@ -33,7 +33,9 @@ O código Python gera 200 logs, dos quais 75% são forçados a ser alertas (i < 
 
 <img width="1920" height="1011" alt="Código Python Simulação de Ataque" src="https://github.com/user-attachments/assets/0bc0e82b-8118-4316-a742-2852c01b6137" />
 
-<img width="1920" height="1007" alt="Código Python Bloco de Geração de Logs" src="https://github.com/user-attachments/assets/2fb713e0-d343-43e0-d343-43e0-9d31-1954102f9a40" />
+
+
+<img width="1920" height="1007" alt="Captura de tela 2025-10-01 193107" src="https://github.com/user-attachments/assets/222ad2f6-e33f-4e99-bd09-4788da6cd8aa" />
 
 Visão Geral e Priorização de Risco (Power BI)
 O dashboard demonstra o salto no KPI, provando a detecção:
